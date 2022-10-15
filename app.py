@@ -1,18 +1,23 @@
-from dash import Dash, dcc, html
-import os
+# Install dash: pip install dash
+# Học thêm tại: https://dash.plotly.com/
 
+# Install bootstrap: import dash_bootstrap_components as dbc
+# Học thêm tại: https://dash-bootstrap-components.opensource.faculty.ai/
+# Học thêm bootstrap tại: https://getbootstrap.com/docs/5.0/components/card/
+
+# Run this app with `python official_lab_v2.py` and
+
+# visit http://127.0.0.1:8050/ in your web browser.
+
+# BẤM CTRL '+' C ĐỂ TẮT APP ĐANG CHẠY
+
+from dash import Dash, html, dcc
 import plotly.express as px
 import pandas as pd
 import firebase_admin
 from firebase_admin import credentials, firestore
+
 import dash_bootstrap_components as dbc
-
-
-# external_stylesheets = ['../assets/style.css']
-app = Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
-server = app.server
-app.title = "Finance Data Analysis"
-
 
 # TẢI DỮ LIỆU TỪ FIRESTORE
 cred = credentials.Certificate("./firebase.json")
@@ -37,6 +42,11 @@ dfGroup["YEAR_ID"] = dfGroup.index
 
 
 # TRỰC QUAN HÓA DỮ LIỆU WEB APP
+app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+app.title = "Finance Data Analysis"
+
+
 figDoanhSoBanHangTheoNam = px.bar(dfGroup, x='YEAR_ID', y="SALES",
                                   title='doanh so ban hang theo nam', color='YEAR_ID',
                                   labels={'YEAR_ID': 'Từ năm 2003, 2004 và 2005', 'QTR_ID': 'Quý trong năm', 'Sum': 'Tổng số lượng sản phẩm'})
@@ -59,8 +69,10 @@ figTileLoiNhuan = px.sunburst(df, path=['YEAR_ID', 'MONTH_ID'], values='LoiNhuan
 doanhso = round(df["SALES"].sum(), 2)
 loinhuan = round(df['LoiNhuan'].sum(), 2)
 
-topDoanhSo = round(df['SALES'].max(), 2)
+topDoanhSo = df['SALES'].max()
+
 topLoiNhuan = round(df['LoiNhuan'].max(), 2)
+
 
 app.layout = dbc.Container(
     children=[
@@ -151,6 +163,7 @@ app.layout = dbc.Container(
         )
     ]
 )
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
