@@ -6,21 +6,12 @@ from firebase_admin import credentials, firestore
 
 import dash_bootstrap_components as dbc
 
-
-
-
-app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
-server = app.server
-app.title = "Finance Data Analysis"
-
-
-
 # TẢI DỮ LIỆU TỪ FIRESTORE
-cred = credentials.Certificate("./firebase.json")
+cred = credentials.Certificate("./iuh-20031381-4b393-firebase-adminsdk-1a2gw-563f4c7a8e.json")
 app = firebase_admin.initialize_app(cred)
 dbFireStore = firestore.client()
 
-queryResults = list(dbFireStore.collection(u'tbl-20017091').stream())
+queryResults = list(dbFireStore.collection(u'tbl-20031381').stream())
 listQueryResults = list(map(lambda x : x.to_dict(), queryResults))
 df = pd.DataFrame(listQueryResults)
 
@@ -37,6 +28,9 @@ dfGroup = df.groupby("YEAR_ID").sum()
 dfGroup["YEAR_ID"] = dfGroup.index
 
 
+app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
+app.title = "Finance Data Analysis"
 
 figDoanhSoBanHangTheoNam = px.bar(dfGroup, x='YEAR_ID', y="SALES",
                                   title='doanh so ban hang theo nam', color='YEAR_ID',
