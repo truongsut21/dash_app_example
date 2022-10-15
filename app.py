@@ -1,4 +1,4 @@
-from dash import Dash, dcc, html, Input, Output
+from dash import Dash, dcc, html
 import os
 
 import plotly.express as px
@@ -8,11 +8,10 @@ from firebase_admin import credentials, firestore
 import dash_bootstrap_components as dbc
 
 
-external_stylesheets = ['../assets/style.css']
-
-app = Dash(__name__, external_stylesheets=external_stylesheets)
-
+# external_stylesheets = ['../assets/style.css']
+app = Dash(__name__,external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
+app.title = "Finance Data Analysis"
 
 
 # TẢI DỮ LIỆU TỪ FIRESTORE
@@ -38,11 +37,6 @@ dfGroup["YEAR_ID"] = dfGroup.index
 
 
 # TRỰC QUAN HÓA DỮ LIỆU WEB APP
-app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
-
-app.title = "Finance Data Analysis"
-
-
 figDoanhSoBanHangTheoNam = px.bar(dfGroup, x='YEAR_ID', y="SALES",
                                   title='doanh so ban hang theo nam', color='YEAR_ID',
                                   labels={'YEAR_ID': 'Từ năm 2003, 2004 và 2005', 'QTR_ID': 'Quý trong năm', 'Sum': 'Tổng số lượng sản phẩm'})
@@ -65,8 +59,7 @@ figTileLoiNhuan = px.sunburst(df, path=['YEAR_ID', 'MONTH_ID'], values='LoiNhuan
 doanhso = round(df["SALES"].sum(), 2)
 loinhuan = round(df['LoiNhuan'].sum(), 2)
 
-topDoanhSo = df['SALES'].max()
-
+topDoanhSo = round(df['SALES'].max(), 2)
 topLoiNhuan = round(df['LoiNhuan'].max(), 2)
 
 app.layout = dbc.Container(
@@ -158,12 +151,6 @@ app.layout = dbc.Container(
         )
     ]
 )
-
-@app.callback(Output('display-value', 'children'),
-                [Input('dropdown', 'value')])
-
-def display_value(value):
-    return f'You have selected {value}'
 
 if __name__ == '__main__':
     app.run_server(debug=True)
