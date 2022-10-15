@@ -11,7 +11,7 @@ cred = credentials.Certificate("./iuh-20031381-4b393-firebase-adminsdk-1a2gw-563
 app = firebase_admin.initialize_app(cred)
 dbFireStore = firestore.client()
 
-queryResults = list(dbFireStore.collection(u'tbl-20031381').stream())
+queryResults = list(dbFireStore.collection(u'tbl-20017091').stream())
 listQueryResults = list(map(lambda x : x.to_dict(), queryResults))
 df = pd.DataFrame(listQueryResults)
 
