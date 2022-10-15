@@ -20,7 +20,7 @@ cred = credentials.Certificate("./firebase.json")
 app = firebase_admin.initialize_app(cred)
 dbFireStore = firestore.client()
 
-queryResults = list(dbFireStore.collection(u'tbl-20031381').stream())
+queryResults = list(dbFireStore.collection(u'tbl-20017091').stream())
 listQueryResults = list(map(lambda x : x.to_dict(), queryResults))
 df = pd.DataFrame(listQueryResults)
 
