@@ -1,16 +1,3 @@
-# Install dash: pip install dash
-# Học thêm tại: https://dash.plotly.com/
-
-# Install bootstrap: import dash_bootstrap_components as dbc
-# Học thêm tại: https://dash-bootstrap-components.opensource.faculty.ai/
-# Học thêm bootstrap tại: https://getbootstrap.com/docs/5.0/components/card/
-
-# Run this app with `python official_lab_v2.py` and
-
-# visit http://127.0.0.1:8050/ in your web browser.
-
-# BẤM CTRL '+' C ĐỂ TẮT APP ĐANG CHẠY
-
 from dash import Dash, html, dcc
 import plotly.express as px
 import pandas as pd
@@ -18,6 +5,15 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 import dash_bootstrap_components as dbc
+
+
+
+
+app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
+app.title = "Finance Data Analysis"
+
+
 
 # TẢI DỮ LIỆU TỪ FIRESTORE
 cred = credentials.Certificate("./firebase.json")
@@ -40,11 +36,6 @@ df["LoiNhuan"] = df["SALES"] - (df["QUANTITYORDERED"] * df["PRICEEACH"])
 dfGroup = df.groupby("YEAR_ID").sum()
 dfGroup["YEAR_ID"] = dfGroup.index
 
-
-# TRỰC QUAN HÓA DỮ LIỆU WEB APP
-app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
-
-app.title = "Finance Data Analysis"
 
 
 figDoanhSoBanHangTheoNam = px.bar(dfGroup, x='YEAR_ID', y="SALES",
@@ -163,6 +154,7 @@ app.layout = dbc.Container(
         )
     ]
 )
+
 
 
 if __name__ == '__main__':
