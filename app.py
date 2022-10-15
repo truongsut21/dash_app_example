@@ -28,7 +28,7 @@ dfGroup = df.groupby("YEAR_ID").sum()
 dfGroup["YEAR_ID"] = dfGroup.index
 
 
-app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP,'../assets/style.css'])
 server = app.server
 app.title = "Finance Data Analysis"
 
